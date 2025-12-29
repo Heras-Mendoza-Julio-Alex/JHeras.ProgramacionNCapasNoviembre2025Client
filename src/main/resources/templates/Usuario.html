@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Usuario</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </head>
+    <body class="container">
+
+        <h1 class="card text-center bg-success text-light">Información de Usuarios</h1>
+
+        <div>
+            <div class="text-center d-grid gap-2 d-md-block mb-3">
+                <a th:href="@{/usuario/form}" class="btn btn-info"><i class="bi bi-file-earmark-text"></i>Formulario</a>
+                <a th:href="@{/usuario/CargaMasiva}" class="btn btn-secondary"><i class="bi bi-file-earmark-text"></i>Carga Masiva</a>
+            </div>
+            <section class="container">
+                <form class="mb-3" method="post" th:object="${usuarioBusqueda}" th:action="@{usuario/search}">
+                    <div class="input-group">
+                        <label class="input-group-text">BUSQUEDA:</label>
+                        <input type="text" class="form-control" placeholder="Nombre" id="nombre" th:field="*{Nombre}"/>
+                        <input type="text" class="form-control" placeholder="Apellido Paterno" th:field="*{ApellidoPaterno}"/>
+                        <input type="text" class="form-control" placeholder="Apellido Materno"th:field="*{ApellidoMaterno}" />
+
+
+                        <select class="form-control" th:field="*{rol.idRol}">
+                            <option value=0> Selecciona un Rol</option>
+                            <option th:each="rol : ${Roles}" th:text="${rol.nombre}" th:value="${rol.IdRol}"></option>
+                        </select>
+
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <table class="table table-success table-striped table-bordered text-center">
+                <tr >
+                    <th class="col-2">Accion</th>
+                    <th class="col-3">Nombre</th>
+                    <th class="col-3">Información</th>
+                    <th class="col-4">Direcciones</th>
+                    <th >Estatus</th>
+                </tr>
+
+                <tr th:each="usuario : ${Usuarios}">
+                    <td>
+                        <div class="btn-group" role="group">
+                            <!--                            <a type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>-->
+                            <button th:onclick="|EliminarUsuario(${usuario.IdUsuario})|" class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                            <a type="button" th:href="@{usuario/detail/{IdUsuario} (IdUsuario = ${usuario.IdUsuario})}" class="btn btn-warning"><i class="bi bi-vector-pen"></i></a>
+
+                        </div>
+                    </td>
+                    <td th:text="|${usuario.Nombre} ${usuario.ApellidoPaterno} ${usuario.ApellidoMaterno}|"> </td>
+
+                    <td class="text-start"> 
+                        <ul>
+                            <li th:text="${usuario.telefono}"></li>
+                            <li th:text="${usuario.fechanacimiento}"></li>
+                            <li th:text="${usuario.username}"></li>
+                            <li th:text="${usuario.email}"></li>
+                            <li th:text="${usuario.sexo}"></li>  
+                            <li th:text="${usuario.celular}"></li>  
+                            <li th:text="${usuario.curp}"></li>  
+                            <li th:text="${usuario.estatus}"></li>  
+
+                        </ul>
+                    </td>
+
+                    <td>
+                        <ul th:if="${usuario.Direcciones != null}">
+                            <li th:each="direccion : ${usuario.Direcciones}" th:text="|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}|"></li>
+                        </ul>
+                        <ul th:unless="${usuario.Direcciones != null}">
+                            <li>Sin dirección.</li>
+                        </ul>
+
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="switchCheckDefault"
+                                   th:checked="${usuario.estatus == 1}">
+                        </div>
+
+                    </td>
+
+
+                </tr>
+
+
+
+            </table>
+        </div>
+
+        <script>
+
+            function EliminarUsuario(IdUsuario) {
+                Swal.fire({
+                    title: "¿Estas seguro de eliminar el usuario?",
+                    text: "El usuario se va a eliminar",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si, borrar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("http://localhost:8080/api/usuario/" + IdUsuario, {
+                            method: 'DELETE'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.Correct) {
+                                Swal.fire("¡Borrado!", "El usuario se eliminó correctamente", "success")
+                                        .then(() => {
+                                            location.reload();
+                                        });
+                            } else {
+                                Swal.fire("Error", data.ErrorMessage, "error");
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire("Error", "Ocurrió un fallo en la conexión", "error");
+                        });
+                    }
+                });
+            }
+
+        </script>
+    </body>
+</html>

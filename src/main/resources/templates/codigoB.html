@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Formulario</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <meta name="theme-color" content="#712cf9">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <form method="post" th:object="${Usuario}" th:action="@{/formEditable}" class="p-4 border rounded shadow-sm bg-light">
+                <!--            method="post"       th:action="@{add}">-->
+
+                <h1 class="mb-4 text-center rounded shadow-sm"> Formulario </h1>
+                <div class="container text-center rounded shadow-sm">
+                    <div class="container text-center">
+                        <div class="mb-4 row align-items-start">
+
+                            <div class="col">
+
+                                <div class="row g-3" th:if="${(Usuario.idUsuario == 0 && Usuario.Direcciones[0].IdDireccion == 0) || (Usuario.idUsuario != 0 && Usuario.Direcciones[0].IdDireccion == -1)}">
+                                    <i class="bi bi-person-fill-add"></i>
+                                    <h4 class="mb-4 text-center">Nombre</h4>
+
+                                    <div class="input-group mb-3">
+
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person-circle"></i></span>
+                                            <input type="text"  class="form-control" placeholder="Nombre(s)" id="NombreAlumno" th:field="*{Nombre}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('Nombre')}" th:errors="*{Nombre}" ></span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person-circle"></i></span>
+                                            <input type="text" class="form-control" placeholder="Apellido Paterno" id="ApellidoPaterno" th:field="*{ApellidoPaterno}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('ApellidoPaterno')}" th:errors="*{ApellidoPaterno}" ></span>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person-circle"></i></span>
+                                            <input type="text" class="form-control" placeholder="Apellido Materno" id="ApellidoMaterno" th:field="*{ApellidoMaterno}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('ApellidoMaterno')}" th:errors="*{ApellidoMaterno}" ></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h4 class="mb-3 text-center">Datos de contacto</h4>
+                                        <div>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-telephone-fill"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Telefono" id="Telefono" th:field="*{Telefono}">
+                                                <span class="text-danger" th:if="${#fields.hasErrors('Telefono')}" th:errors="*{Telefono}" ></span>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-envelope-at"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Email" id="Email" th:field="*{Email}">
+                                                <span class="text-danger" th:if="${#fields.hasErrors('Email')}" th:errors="*{Email}" ></span>
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    <i class="bi bi-phone"></i>
+                                                </span>
+
+                                                <input type="text" class="form-control" placeholder="Celular" id="Celular" th:field="*{Celular}">
+                                                <span class="text-danger" th:if="${#fields.hasErrors('Celular')}" th:errors="*{Celular}" ></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4 class="mb-3">Información</h4>
+                                    <div class="input-group mb-3">
+
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person-bounding-box"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Curp" id="Curp" th:field="*{Curp}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('Curp')}" th:errors="*{Curp}" ></span>
+
+                                        </div>
+
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Username" id="Username" th:field="*{Username}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('Username')}" th:errors="*{Username}" ></span>
+                                        </div>                               
+
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-person-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}">
+                                            <span class="text-danger" th:if="${#fields.hasErrors('Password')}" th:errors="*{Password}" ></span>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-calendar-heart"></i>
+                                            </span>
+                                            <input type="date" class="form-control" id="fechanacimiento" th:field="${Usuario.fechanacimiento}" >
+
+                                        </div>
+
+                                        <div class="container mb-4 align-items-start" id="sexo" >
+                                            <i class="bi bi-person-standing"></i>
+                                            <input type="radio" class="btn btn-primary" name="sexo" th:field="*{sexo}" value="H" placeholder="Hombre">
+                                            <i class="bi bi-person-standing-dress"></i>
+                                            <input type="radio" class="btn btn-primary" name="sexo" th:field="*{sexo}" value="M" placeholder="Mujer">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <label for="rolUsuario" class="form-label fw-bold">Rol</label>
+
+                                        <select class="form-control" id="RolUsuario" th:field="*{rol.idRol}">
+                                            <option value=0> Selecciona un Rol</option>
+                                            <option th:each="rol : ${Roles}" th:text="${rol.Nombre}" th:value="${rol.idRol}"></option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col col-sm col-md mb-4">
+                                    <button type="submit" class="btn btn-primary ">Editar info</button>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div th:if="${(Usuario.idUsuario == 0 && Usuario.Direcciones[0].idDireccion == 0) 
+                                     || (Usuario.idUsuario !=0 && Usuario.Direcciones[0].idDireccion > 0) 
+                                     || (Usuario.idUsuario !=0 && Usuario.Direcciones[0].idDireccion == 0)}">
+                                   <i class="bi bi-geo-alt-fill"></i>
+                                    <h4 class="text-center">Direccion</h4>
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="bi bi-signpost-2-fill"></i></span>
+                                        <input type="text" class="form-control" placeholder="Calle" id="Calle" th:field="*{Direcciones[0].Calle}">
+
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="bi bi-1-circle-fill"></i></span>
+                                        <input type="text" class="form-control" placeholder="Numero Interior" id="NumeroInterior" th:field="*{Direcciones[0].NumeroInterior}">
+
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="bi bi-2-circle-fill"></i></span>
+                                        <input type="text" class="form-control" placeholder="Numero Exterior" id="NumeroExterior" th:field="*{Direcciones[0].NumeroExterior}">
+
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <label for="ddlpais" class="form-label fw-bold">Pais</label>
+                                        <select id="ddlpais" class="form-control">
+                                            <!--<option value=0> Selecciona un Pais</option>-->
+                                            <option value=0 selected>Selecciona un pais</option>
+                                            <!--<option value=1>México</option>-->
+                                            <option th:each=" pais : ${Paises}" th:text="${pais.Nombre}" th:value="${pais.idPais}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="ddlestado" class="form-label fw-bold">Estado</label>
+                                        <select id="ddlestado" class="form-select" aria-label="Default select example">
+                                            <option value=0 selected>Selecciona un estado</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="ddlmunicipio" class="form-label fw-bold">Municipio</label>
+                                        <select id="ddlmunicipio" class="form-select" aria-label="Default select example">
+                                            <option value=0 selected>Selecciona un municipio</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <label for="ddlcolonia" class="form-label fw-bold">Colonia</label>
+                                        <select id="ddlcolonia" class="form-select" aria-label="Default select example" th:field="*{Direcciones[0].Colonia.idColonia}">
+                                            <option value=0>Selecciona una colonia</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+            </form>
+        </div>
+
+
+
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+        <script>
+
+            $(document).ready(function () {
+
+                console.log("iniciando")
+                $("#ddlpais").change(function () {
+                    if ($("#ddlpais").val() == 0) {
+                        $("#ddlestado").empty();
+                        $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                    } else {
+                        console.log("Primer Else")
+                        $.ajax({
+                            url: "/usuario/getEstadosByPais/" + $("#ddlpais").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlestado").empty();
+                                    $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                                    $.each(data.Objects, function (i, estado) {
+                                        $("#ddlestado").append("<option value=" + estado.idEstado + ">" + estado.nombre + "</option>");
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal");
+                            }
+
+                        })
+                    }
+                });
+
+
+                $("#ddlestado").change(function () {
+                    if ($("#ddlestado").val() == 0) {
+                        $("#ddlmunicipio").empty();
+                        $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                    } else {
+                        console.log("municipio")
+                        $.ajax({
+                            url: "/usuario/getMunicipioByEstado/" + $("#ddlestado").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlmunicipio").empty();
+                                    $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                                    $.each(data.Objects, function (i, municipio) {
+                                        $("#ddlmunicipio").append("<option value=" + municipio.idMunicipio + ">" + municipio.nombre + "</option>");
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal")
+                            }
+
+                        })
+                    }
+
+                });
+
+
+                $("#ddlmunicipio").change(function () {
+                    if ($("#ddlmunicipio").val() == 0) {
+                        $("#ddlcolonia").empty();
+                        $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                    } else {
+                        console.log("colonia")
+                        $.ajax({
+                            url: "/usuario/getColoniaByMunicipio/" + $("#ddlmunicipio").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlcolonia").empty();
+                                    $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                                    $.each(data.Objects, function (i, colonia) {
+//                                        $("#ddlcolonia").append("<option value=" + colonia.idColonia + ">" + colonia.nombre + "</option>");
+                                        $("#ddlcolonia").append('<option value="' + colonia.idColonia + '">' + colonia.nombre + '</option>');
+
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal")
+                            }
+
+                        })
+                    }
+
+                });
+
+            });
+
+        </script>
+
+    </body>
+    <html>
+<!--@PostMapping("add")
+    public String Add(@Valid @ModelAttribute("Usuario") Usuario usuario, BindingResult bindingResult, Model model) {
+
+        
+//        if (bindingResult.hasErrors()) {
+//
+//            model.addAttribute("Usuario", usuario);
+//
+//            return "FormUsu";
+//        } else {
+            
+            ModelMapper modelMapper = new ModelMapper();
+            
+            JHeras.ProgramacionNCapasNoviembre2025.JPA.Usuario usuarioJPA=modelMapper.map(usuario, JHeras.ProgramacionNCapasNoviembre2025.JPA.Usuario.class);
+            
+            Result resultadd=usuarioJPADAOImplementation.add(usuarioJPA);
+                        
+        //}
+
+        return "Usuario";
+    }-->
+
+
+Usuario detail html v1
+
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Detalles Usuario</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body class="container">
+        <div class="container text-center rounded shadow-sm">
+            <div class="container text-center">
+                <div class="mb-3 row align-items-start">
+                    <div class="col" >
+                        <h3>Información Usuario</h3>
+                        <div class="text-center">
+                            <img src="https://static.vecteezy.com/system/resources/thumbnails/022/014/184/small/user-icon-member-login-isolated-vector.jpg" class="rounded" style="max-width: 18rpx;">
+                        </div>
+
+                        <tr th:each="usuario : ${usuario}">
+
+                        <div th:if="${Usuario != null}">
+                            <p th:text="${Usuario.idUsuario}">User ID</p>
+                        </div>
+                        <div class="row g-3">
+                            <div class="input-group mb-3">
+
+                                <div class="mb-3">
+
+                                    <label for="NombreUsuario" class="form-label fw-bold">Nombre</label>
+                                    <input type="text" class="form-control" placeholder="Nombre" id="NombreUsuario" 
+                                           th:field="${usuario.Nombre}" onkeypress="SoloLetras(event, this)">  
+
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ApellidoPaterno" class="form-label fw-bold">ApellidoPaterno</label>
+                                    <input type="text" class="form-control" placeholder="Apellido Paterno" id="ApellidoPaterno" 
+                                           th:field="${usuario.ApellidoPaterno}" onkeypress="SoloLetras(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ApellidoMaterno" class="form-label fw-bold">ApellidoMaterno</label>
+                                    <input type="text" class="form-control" placeholder="Apellido Materno" id="ApellidoMaterno" 
+                                           th:field="${usuario.ApellidoMaterno}" onkeypress="SoloLetras(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="username" class="form-label fw-bold">username</label>
+                                    <input type="text" class="form-control" placeholder="username" id="username" 
+                                           th:field="${usuario.username}" onkeypress="username(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="Correo" class="form-label fw-bold">Correo</label>
+                                    <input type="email" class="form-control" placeholder="Correo" id="Correo" 
+                                           th:field="${usuario.Email}" oninput="Email(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label for="Telefono" class="form-label fw-bold">Telefono</label>
+                                    <input type="text" class="form-control" placeholder="Telefono" id="Telefono" 
+                                           th:field="${usuario.Telefono}" oninput="numeroCT(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="Celular" class="form-label fw-bold">Celular</label>
+                                    <input type="tel" class="form-control" placeholder="Celular" id="Celular" 
+                                           th:field="${usuario.Celular}" oninput="numeroCT(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fechanacimiento" class="form-label fw-bold">fechanacimiento</label>
+                                    <input type="date" class="form-control" placeholder="fechanacimiento" id="fechanacimiento" 
+                                           th:field="${usuario.fechanacimiento}" onblur="Fecha(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>                                                                                               
+
+                                <div class="mb-3">
+                                    <label for="Curp" class="form-label fw-bold">Curp</label>
+                                    <input type="text" class="form-control" placeholder="Curp" id="Curp" 
+                                           th:field="${usuario.Curp}" oninput="Curp(event, this)">             
+                                    <span class="text-danger error-msg"></span>
+                                </div>
+
+                            
+
+                            <div class="container mb-3 align-items-start" id="sexo" th:field="*{sexo}" for="sexo">
+                                <i class="bi bi-person-standing"></i>
+                                <input type="radio" class="btn btn-primary" name="sexo" value="H" placeholder="Hombre">
+                                <i class="bi bi-person-standing-dress"></i>
+                                <input type="radio" class="btn btn-primary" name="sexo" value="M" placeholder="Mujer">
+                            </div> 
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label fw-bold">password</label>
+                                <input type="password" class="form-control" placeholder="password" id="password" 
+                                       th:field="${usuario.password}" oninput="password(event, this)">             
+                                <span class="text-danger error-msg"></span>
+                            </div>
+
+                           
+                            </div>
+                             <div class="mb-3">
+                                <a class="btn btn-primary" th:href="@{/usuario/formEditable?idUsuario=}+${usuario.idUsuario}">Editar Información</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col">
+                        <h3>Direccion(es)</h3>
+
+                        <!--<img src="https://cdn-icons-png.flaticon.com/512/4226/4226982.png" class="rounded" style="max-width: 10rem;">-->
+                        <table class="table">
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Calle</th>
+                                    <th scope="col">Numero Interior</th>
+                                    <th scope="col">Numero Exterior</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr th:if="${usuario.Direcciones != null}" 
+                                    th:each="direccion : ${usuario.Direcciones}">
+                                    <td th:text="${direccion.Calle}"></td>
+                                    <td th:text="${direccion.NumeroInterior}"</td>
+                                    <td th:text="${direccion.NumeroExterior}"></td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm" th:href="@{/usuario/formEditable?idUsuario=}+${usuario.idUsuario}+'&IdDireccion='+${direccion.IdDireccion}">Editar</a> 
+                                        <a class="btn btn-danger btn-sm">Borrar</a>
+                                        <!--                                        <button th:onclick="|EliminarDireccion(${direccion.IdDireccion})|" class="btn btn-danger">
+                                                                                    <i class="bi bi-trash-fill"></i>
+                                                                                </button>-->
+                                    </td>
+                                </tr>
+
+
+
+                                <tr th:unless="${usuario.Direcciones != null}">
+                                    <td colspan="2">Sin dirección.</td>
+                                </tr>                            
+
+
+                            </tbody>
+
+                        </table>
+
+                        <div>
+                            <a class="btn btn-secondary mt-2 col-12" th:href="@{/usuario/formEditable?idUsuario=}+${usuario.idUsuario}+'&IdDireccion=0'">Agregar Dirección</a>
+                        </div>
+                        <div id="idoculto" class=hidden>
+                            <input type="hidden" th:field="${usuario.idUsuario}">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!--    <script>
+             
+            function EliminarDireccion(IdDireccion) {
+            console.log("Boton de eliminar direccion");
+            Swal.fire({
+                title: "¿Estas seguro de eliminar la direccion?",
+                        text: "La direccion se va a eliminar",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Si, borrar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                window.location.href = "/usuario/deleteDireccion/" + IdDireccion;
+              }
+            });
+            }
+    
+        </script>-->
+    <script>
+
+                                               function numeroCT(event, input) {
+                                                   let key = event.key;
+                                                   let RegExp = /^\d{10}$/;
+                                                   if (RegExp.test(input.value)) {
+                                                       $(input).removeClass("error").addClass("correct");
+                                                       $(input).siblings(".error-msg").text("");
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa un número válido");
+                                                   }
+                                               }
+
+                                               function Curp(event, input) {
+                                                   let value = input.value;
+                                                   let RegExp = /^[A-Z]{4}[0-9]{6}[A-Z]{7}[0-9]{1}$/;
+
+                                                   if (RegExp.test(value)) {
+                                                       $(input).removeClass("error").addClass("correct");
+                                                       $(input).siblings(".error-msg").text("");
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa una curp valida");
+                                                   }
+                                               }
+
+                                               function SoloLetras(event, input) {
+                                                   let key = event.key;
+                                                   let RegExp = /[a-zA-Z]+/;
+                                                   if (RegExp.test(key)) {
+                                                       $(input).removeClass("error").addClass("correct");
+                                                       $(input).siblings(".error-msg").text("");
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("No se permiten numeros");
+                                                       event.preventDefault();
+                                                   }
+                                               }
+
+                                               function Email(event, input) {
+                                                   let key = event.key;
+                                                   let RegExp = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
+                                                   if (RegExp.test(input.value)) {
+                                                       $(input).removeClass("error").addClass("correct");
+                                                       $(input).siblings(".error-msg").text("");
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa un correo valido");
+                                                       event.preventDefault();
+                                                   }
+                                               }
+
+                                               function Fecha(event, input) {
+
+                                                   const FechaInput = new Date(input.value);
+                                                   const FechaActual = new Date();
+
+                                                   if (FechaInput < FechaActual) {
+                                                       $(input).removeClass("error").addClass("correct");
+
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa una fecha valida");
+                                                       event.preventDefault();
+                                                   }
+
+                                               }
+
+                                               function username(event, input) {
+                                                   let key = event.key();
+
+                                                   let RegExp = /\w+/;
+
+                                                   if (RegExp.test(key)) {
+                                                       $(input).removeClass("error").addClass("correct");
+                                                   } else {
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa un usuario valido");
+                                                       event.preventDefault();
+                                                   }
+
+                                               }
+
+                                               function password(event, input) {
+
+                                                   let RegExp = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,}$/;
+
+
+                                                   if (RegExp.test(input.value)) {
+
+                                                       $(input).removeClass("error").addClass("correct");
+                                                       $(input).siblings(".error-msg").text("");  // Limpiar el mensaje de error
+                                                   } else {
+
+                                                       $(input).removeClass("correct").addClass("error");
+                                                       $(input).siblings(".error-msg").text("Ingresa una contraseña de mínimo 8 dígitos con al menos una mayúscula y número.");
+                                                   }
+                                               }
+
+    </script>
+</html>
+
+
+
+   <!-- Modal editar Direccion -->
+            <div class="modal fade" id="editarDireccion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Direccion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+   
+   
+   
+   -------------------------------------------------
+   usuariodetail
+   
+   <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Detalles Usuario</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+        <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    </head>
+
+    <body class="container">
+
+        <div class="container text-center rounded shadow-sm mt-4">
+
+            <div class="row mb-3 align-items-start">
+
+                <!-- INFORMACIÓN DEL USUARIO -->
+
+                <div class="col">
+
+                    <h3>Información Usuario</h3>
+
+                    <div class="text-center mb-3">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/022/014/184/small/user-icon-member-login-isolated-vector.jpg"
+                             class="rounded" style="max-width: 180px;">
+                    </div>
+
+
+                    <tr th:each="usuario : ${usuario}"></tr>
+
+                    <div th:if="${Usuario != null}">
+                        <p th:text="${Usuario.idUsuario}"></p>
+                    </div>
+
+                    <div class="row g-3">
+
+                        <!-- ==================== NOMBRE Y APELLIDOS ==================== -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Nombre</label>
+                            <input type="text" class="form-control" placeholder="Nombre"
+                                   th:field="${usuario.Nombre}" onkeypress="SoloLetras(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Apellido Paterno</label>
+                            <input type="text" class="form-control" placeholder="Apellido Paterno"
+                                   th:field="${usuario.ApellidoPaterno}" onkeypress="SoloLetras(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Apellido Materno</label>
+                            <input type="text" class="form-control" placeholder="Apellido Materno"
+                                   th:field="${usuario.ApellidoMaterno}" onkeypress="SoloLetras(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <!-- ==================== USERNAME Y PASSWORD ==================== -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Username</label>
+                            <input type="text" class="form-control" placeholder="username"
+                                   th:field="${usuario.username}" onkeypress="username(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" placeholder="password"
+                                   th:field="${usuario.password}" oninput="password(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <!-- ==================== CORREO / TELÉFONOS ==================== -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Correo</label>
+                            <input type="email" class="form-control" placeholder="Correo"
+                                   th:field="${usuario.Email}" oninput="Email(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Teléfono</label>
+                            <input type="text" class="form-control" placeholder="Telefono"
+                                   th:field="${usuario.Telefono}" oninput="numeroCT(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Celular</label>
+                            <input type="tel" class="form-control" placeholder="Celular"
+                                   th:field="${usuario.Celular}" oninput="numeroCT(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <!-- ==================== FECHA / CURP / SEXO ==================== -->
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control"
+                                   th:field="${usuario.fechanacimiento}" onblur="Fecha(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">CURP</label>
+                            <input type="text" class="form-control" placeholder="Curp"
+                                   th:field="${usuario.Curp}" oninput="Curp(event, this)">
+                            <span class="text-danger error-msg"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold d-block">Sexo</label>
+
+
+
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="sexo" id="sexoH" autocomplete="off" th:field="${usuario.Sexo}" value="H">
+                                <label class="btn btn-outline-primary" for="sexoH"><i class="bi bi-person"></i> Hombre</label>
+
+                                <input type="radio" class="btn-check" name="sexo" id="sexoM" autocomplete="off" th:field="${usuario.Sexo}" value="M">
+                                <label class="btn btn-outline-primary" for="sexoM"><i class="bi bi-person-dress"></i> Mujer</label>
+                            </div>
+
+
+
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarUsuario">
+                            Editar Datos
+                        </button>
+                        <!--                        
+                                                  BOTÓN 
+                                                <div class="col-12 mb-3">
+                                                    <a class="btn btn-primary w-100"
+                                                       th:href="@{/usuario/formEditable(idUsuario=${usuario.idUsuario})}">
+                                                        Editar Información
+                                                    </a>
+                                                </div>-->
+
+                    </div>
+
+                </div>
+
+
+                <!--  DIRECCIONES -->
+
+                <div class="col">
+
+                    <h3>Dirección(es)</h3>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Calle</th>
+                                <th scope="col">Número Interior</th>
+                                <th scope="col">Número Exterior</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr th:if="${usuario.Direcciones != null}"
+                                th:each="direccion : ${usuario.Direcciones}">
+                                <td th:text="${direccion.Calle}"></td>
+                                <td th:text="${direccion.NumeroInterior}"></td>
+                                <td th:text="${direccion.NumeroExterior}"></td>
+
+                                <td>
+                                    <!--                                    <a class="btn btn-warning btn-sm"
+                                                                           th:href="@{/usuario/formEditable(idUsuario=${usuario.idUsuario}, IdDireccion=${direccion.IdDireccion})}">
+                                                                            Editar
+                                                                        </a>-->
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#agregarDireccion">
+                                        Editar Dirección
+                                    </button>
+
+                                    <a class="btn btn-danger btn-sm">Borrar</a>
+                                </td>
+                            </tr>
+
+                            <tr th:unless="${usuario.Direcciones != null}">
+                                <td colspan="4">Sin dirección.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div>
+                        <!--                        <a class="btn btn-secondary mt-2 col-12"
+                                                   th:href="@{/usuario/formEditable(idUsuario=${usuario.idUsuario}, IdDireccion=0)}">
+                                                    Agregar Dirección
+                                                </a>-->
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#agregarDireccion">
+                            Agregar Dirección
+                        </button>
+                    </div>
+
+                    <input type="hidden" th:field="${usuario.idUsuario}">
+
+                </div>
+
+            </div>
+
+
+            <!-- Modal editar usuario -->
+            <div class="modal fade" id="editarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Usuario</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form method="post" th:object="${usuario}" th:action="@{/usuario/add}">
+                            <input type="hidden" class="form-control" th:field="${usuario.idUsuario}">
+                            <input type="hidden" th:field="*{idUsuario}">
+
+                            <div class="modal-body">
+
+                                <div class="row g-3">
+                                    <!-- ==================== NOMBRE Y APELLIDOS ==================== -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Nombre</label>
+                                        <input type="text" class="form-control" placeholder="Nombre"
+                                               th:field="${usuario.Nombre}" onkeypress="SoloLetras(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Apellido Paterno</label>
+                                        <input type="text" class="form-control" placeholder="Apellido Paterno"
+                                               th:field="${usuario.ApellidoPaterno}" onkeypress="SoloLetras(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Apellido Materno</label>
+                                        <input type="text" class="form-control" placeholder="Apellido Materno"
+                                               th:field="${usuario.ApellidoMaterno}" onkeypress="SoloLetras(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <!-- ==================== USERNAME Y PASSWORD ==================== -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Username</label>
+                                        <input type="text" class="form-control" placeholder="username"
+                                               th:field="${usuario.username}" onkeypress="username(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Password</label>
+                                        <input type="password" class="form-control" placeholder="password"
+                                               th:field="${usuario.password}" oninput="password(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <!-- ==================== CORREO / TELÉFONOS ==================== -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Correo</label>
+                                        <input type="email" class="form-control" placeholder="Correo"
+                                               th:field="${usuario.Email}" oninput="Email(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Teléfono</label>
+                                        <input type="text" class="form-control" placeholder="Telefono"
+                                               th:field="${usuario.Telefono}" oninput="numeroCT(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Celular</label>
+                                        <input type="tel" class="form-control" placeholder="Celular"
+                                               th:field="${usuario.Celular}" oninput="numeroCT(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <!-- ==================== FECHA / CURP / SEXO ==================== -->
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Fecha</label>
+                                        <input type="date" class="form-control"
+                                               th:field="${usuario.fechanacimiento}" onblur="Fecha(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold">Curp</label>
+                                        <input type="text" class="form-control" placeholder="Curp"
+                                               th:field="${usuario.Curp}" oninput="Curp(event, this)">
+                                        <span class="text-danger error-msg"></span>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label fw-bold d-block">Sexo</label>
+
+
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check"
+                                                   th:field="${usuario.Sexo}" value="H">
+                                            <label class="btn btn-outline-primary" for="H">
+                                                <i class="bi bi-person"></i> Hombre
+                                            </label>
+
+                                            <input type="radio" class="btn-check"
+                                                   th:field="${usuario.Sexo}" value="M" >
+                                            <label class="btn btn-outline-primary" for="M">
+                                                <i class="bi bi-person-dress"></i> Mujer
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!--                            </div>-->
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                                <!--                                <button th:onclick="|EditarUsu(${usuario.IdUsuario})|" class="btn btn-primary">-->
+                                <!--                                Editar
+                                                            </button>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal Agregar/editar Direccion -->
+            <div class="modal fade" id="agregarDireccion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Direccion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+
+                            <div class="mb-3">
+                                <h5 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-geo-alt-fill"></i> Dirección
+                                </h5>
+
+                                <!-- ==================== CALLE / NUMEROS ==================== -->
+                                <div class="row g-3">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Calle</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-signpost-split"></i></span>
+                                            <input type="text" class="form-control" id="Calle"
+                                                   placeholder="Calle">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Número Ext</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                            <input type="text" class="form-control" id="NumeroExterior"
+                                                   placeholder="Exterior">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Número Int</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-door-open"></i></span>
+                                            <input type="text" class="form-control" id="NumeroInterior"
+                                                   placeholder="Interior">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ==================== PAÍS / ESTADO / MUNICIPIO / COLONIA ==================== -->
+                                <div class="row g-3 mt-2">
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">País</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-globe-americas"></i></span>
+                                            <select id="ddlpais" class="form-select">
+                                                <option value="0" selected>Selecciona un país</option>
+                                                <option th:each="pais : ${Paises}" th:text="${pais.Nombre}" th:value="${pais.idPais}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Estado</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                            <select id="ddlestado" class="form-select">
+                                                <option value="0" selected>Selecciona un estado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Municipio</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-map-fill"></i></span>
+                                            <select id="ddlmunicipio" class="form-select">
+                                                <option value="0" selected>Selecciona un municipio</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Colonia</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-house-door"></i></span>
+                                            <select id="ddlcolonia" class="form-select"
+                                                    >
+                                                <option value="0" selected>Selecciona una colonia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-success" >Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+    </body>
+   
+    
+    _----------------------------
+                                            //        modal y funcionamiento
+
+//           function EditarUsu(IdUsuario) {
+//               Swal.fire({
+//                   title: "¿Estas seguro de editar el usuario?",
+//                   text: "El usuario se va a modificar",
+//                   icon: "warning",
+//                   showCancelButton: true,
+//                   confirmButtonColor: "#3085d6",
+//                   cancelButtonColor: "#d33",
+//                   confirmButtonText: "Si"
+//               }).then((result) => {
+//                   if (result.isConfirmed) {
+//                       window.location.href = "/usuario/update/" + IdUsuario;
+//                   }
+//               });
+//           }
+
+
+
+     <div class="modal fade" id="modalDireccion" tabindex="-1" aria-labelledby="agregarDireccionLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="agregarDireccionLabel">Agregar Direccion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>                                           
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <h5 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-geo-alt-fill"></i> Dirección
+                                </h5>       
+
+
+                                <form th:object ="${Direccion}" th:action="@{/usuario/${IdUsuario}/direccion}">
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">Calle</label>
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text"><i class="bi bi-signpost-split"></i></span>
+                                                <input type="text" class="form-control" id="Calle" placeholder="Calle">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Número Ext</label>
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                                                <input type="text" class="form-control" id="NumeroExterior" placeholder="Exterior" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fw-semibold">Número Int</label>
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text"><i class="bi bi-door-open"></i></span>
+                                                <input type="text" class="form-control" id="NumeroInterior" placeholder="Interior">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">País</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-globe-americas"></i></span>
+                                            <select id="ddlpais" class="form-select">
+                                                <option value="0" selected>Selecciona un país</option>
+                                                <option th:each="pais : ${Paises}" th:text="${pais.Nombre}"
+                                                        th:value="${pais.idPais}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Estado</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-map"></i></span>
+                                            <select id="ddlestado" class="form-select">
+                                                <option value="0" selected>Selecciona un estado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Municipio</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-map-fill"></i></span>
+                                            <select id="ddlmunicipio" class="form-select">
+                                                <option value="0" selected>Selecciona un municipio</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label fw-semibold">Colonia</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="bi bi-house-door"></i></span>
+                                            <select id="ddlcolonia" class="form-select">
+                                                <option value="0" selected>Selecciona una colonia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            <!--                            <button type="button" 
+                                                                onclick="EditarAgregarDi(${Usuario.idUsuario}, ${Usuario.Direcciones[0] ? Usuario.Direcciones[0].idDireccion : 'null'})" 
+                                                                class="btn btn-success">
+                                                            'Editar' o 'Agregar'
+                                                        </button>-->
+                            <button type="submit" class="btn btn-success">
+                                Guardar dirección
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+---------------
+$("#ddlestado").off('change');
+                    
+                    
+                    $('#ddlestado').val(idEstado).trigger('change');
+
+                    $('#ddlmunicipio').val(idMunicipio).trigger('change');
+                    
+
+                    $('#ddlcolonia').val(idColonia).trigger('change');
+------------
+
+    $(document).ready(function () {
+
+            console.log("iniciando");
+            $("#ddlpais").change(function () {
+                if ($("#ddlpais").val() == 0) {
+                    $("#ddlestado").empty();
+                    $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                } else {
+                    console.log("Primer Else")
+                    $.ajax({
+                        url: "/usuario/getEstadosByPais/" + $("#ddlpais").val(),
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.Correct) {
+                                $("#ddlestado").empty();
+                                $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                                $.each(data.Objects, function (i, estado) {
+                                    $("#ddlestado").append("<option value=" + estado.idEstado + ">" + estado.nombre + "</option>");
+                                })
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Algo salio mal");
+                        }
+
+                    })
+                }
+            }
+            );
+            $("#ddlestado").change(function () {
+                if ($("#ddlestado").val() == 0) {
+                    $("#ddlmunicipio").empty();
+                    $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                } else {
+                    console.log("municipio")
+                    $.ajax({
+                        url: "/usuario/getMunicipioByEstado/" + $("#ddlestado").val(),
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.Correct) {
+                                $("#ddlmunicipio").empty();
+                                $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                                $.each(data.Objects, function (i, municipio) {
+                                    $("#ddlmunicipio").append("<option value=" + municipio.idMunicipio + ">" + municipio.nombre + "</option>");
+                                })
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Algo salio mal")
+                        }
+
+                    })
+                }
+
+            });
+            $("#ddlmunicipio").change(function () {
+                if ($("#ddlmunicipio").val() == 0) {
+                    $("#ddlcolonia").empty();
+                    $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                } else {
+                    console.log("colonia")
+                    $.ajax({
+                        url: "/usuario/getColoniaByMunicipio/" + $("#ddlmunicipio").val(),
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data, textStatus, jqXHR) {
+                            if (data.Correct) {
+                                $("#ddlcolonia").empty();
+                                $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                                $.each(data.Objects, function (i, colonia) {
+                                    //                                        $("#ddlcolonia").append("<option value=" + colonia.idColonia + ">" + colonia.nombre + "</option>");
+                                    $("#ddlcolonia").append('<option value="' + colonia.idColonia + '">' + colonia.nombre + '</option>');
+                                })
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            alert("Algo salio mal")
+                        }
+
+                    })
+                }
+
+            });
+        });

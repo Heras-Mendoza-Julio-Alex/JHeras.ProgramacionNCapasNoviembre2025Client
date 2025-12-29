@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Formulario</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+        <meta name="theme-color" content="#712cf9">
+    </head>
+    <body class="bg-light">
+
+        <div class="container my-5">
+            <form method="post"
+                  th:object="${Usuario}"
+                  th:action="@{/usuario/formEditable}"
+                  enctype="multipart/form-data">
+                <input type="hidden" th:field="*{idUsuario}" />
+
+                <h1 class="mb-4 text-center">Formulario de Usuario</h1>
+                <div class="row g-3" th:if="${(Usuario.idUsuario == 0 && Usuario.Direcciones[0].IdDireccion == 0) || (Usuario.idUsuario != 0 && Usuario.Direcciones[0].IdDireccion == -1)}">
+                    <!-- Datos Personales -->
+                    <section class="mb-4">
+                        <h4 class="mb-3">Nombre</h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="NombreAlumno" class="form-label">Nombre(s)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                    <input type="text" class="form-control" id="NombreAlumno" th:field="*{Nombre}" placeholder="Nombre(s)">
+                                </div>
+                                <div class="text-danger" th:if="${#fields.hasErrors('Nombre')}" th:errors="*{Nombre}"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ApellidoPaterno" class="form-label">Apellido Paterno</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                    <input type="text" class="form-control" id="ApellidoPaterno" th:field="*{ApellidoPaterno}" placeholder="Apellido Paterno">
+                                </div>
+                                <div class="text-danger" th:if="${#fields.hasErrors('ApellidoPaterno')}" th:errors="*{ApellidoPaterno}"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ApellidoMaterno" class="form-label">Apellido Materno</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-circle"></i></span>
+                                    <input type="text" class="form-control" id="ApellidoMaterno" th:field="*{ApellidoMaterno}" placeholder="Apellido Materno">
+                                </div>
+                                <div class="text-danger" th:if="${#fields.hasErrors('ApellidoMaterno')}" th:errors="*{ApellidoMaterno}"></div>
+                            </div>
+
+                            <div class="card p-3 w-100 h-100">
+                                <label for="imagenFile" class="form-label fw-bold">Imagen</label>
+                                <input type="file" class="form-control mb-2" name="imagenFile" accept="image/png, image/jpeg, image/jpg" id="imagenFile">
+                            <img id="previewImage" style="max-width: 300px; max-height: auto" class="mx-auto" src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"/>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+                    <!-- Contacto -->
+                    <section class="mb-4">
+                        <h4 class="mb-3">Datos de contacto</h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="Telefono" class="form-label">Teléfono</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                    <input type="text" class="form-control" id="Telefono" th:field="*{Telefono}" placeholder="Teléfono">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Celular" class="form-label">Celular</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                                    <input type="text" class="form-control" id="Celular" th:field="*{Celular}" placeholder="Celular">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope-at"></i></span>
+                                    <input type="email" class="form-control" id="Email" th:field="*{Email}" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Información adicional -->
+                    <section class="mb-4">
+                        <h4 class="mb-3">Información</h4>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="Curp" class="form-label">CURP</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-bounding-box"></i></span>
+                                    <input type="text" class="form-control" id="Curp" th:field="*{Curp}" placeholder="CURP">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="Username" class="form-label">Usuario</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="Username" th:field="*{Username}" placeholder="Usuario">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Contraseña">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Fecha de nacimiento y sexo -->
+                    <section class="mb-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-6">
+                                <label for="fechanacimiento" class="form-label">Fecha de nacimiento</label>
+                                <input type="date" class="form-control" id="fechanacimiento" th:field="*{fechanacimiento}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label d-block">Sexo</label>
+                                <div class="btn-group" role="group">
+                                    <input type="radio" class="btn-check" name="sexo" id="sexoH" autocomplete="off" th:field="*{sexo}" value="H">
+                                    <label class="btn btn-outline-primary" for="sexoH"><i class="bi bi-person"></i> Hombre</label>
+
+                                    <input type="radio" class="btn-check" name="sexo" id="sexoM" autocomplete="off" th:field="*{sexo}" value="M">
+                                    <label class="btn btn-outline-primary" for="sexoM"><i class="bi bi-person-dress"></i> Mujer</label>
+                                    <input type="hidden" th:field="*{Sexo}">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Rol -->
+                    <section class="mb-4">
+                        <label for="RolUsuario" class="form-label">Rol</label>
+                        <select class="form-select" id="RolUsuario" th:field="*{rol.idRol}">
+                            <option value="0">Selecciona un Rol</option>
+                            <option th:each="rol : ${Roles}" th:text="${rol.Nombre}" th:value="${rol.idRol}"></option>
+                        </select>
+                    </section>
+
+                </div>
+
+                <!-- Dirección -->
+                <div th:if="${(Usuario.idUsuario == 0 && Usuario.Direcciones[0].idDireccion == 0) 
+                     || (Usuario.idUsuario !=0 && Usuario.Direcciones[0].idDireccion > 0) 
+                     || (Usuario.idUsuario !=0 && Usuario.Direcciones[0].idDireccion == 0)}">
+                    <section class="mb-4">
+                        <h4 class="mb-3">Dirección</h4>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="Calle" class="form-label">Calle</label>
+                                <input type="text" class="form-control" id="Calle" th:field="*{Direcciones[0].Calle}" placeholder="Calle">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="NumeroExterior" class="form-label">Número Exterior</label>
+                                <input type="text" class="form-control" id="NumeroExterior" th:field="*{Direcciones[0].NumeroExterior}" placeholder="Número Exterior">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="NumeroInterior" class="form-label">Número Interior</label>
+                                <input type="text" class="form-control" id="NumeroInterior" th:field="*{Direcciones[0].NumeroInterior}" placeholder="Número Interior">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mt-3">
+                            <div class="col-md-3">
+                                <label for="ddlpais" class="form-label">País</label>
+                                <select id="ddlpais" class="form-select">
+                                    <option value="0" selected>Selecciona un país</option>
+                                    <option th:each="pais : ${Paises}" th:text="${pais.Nombre}" th:value="${pais.idPais}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ddlestado" class="form-label">Estado</label>
+                                <select id="ddlestado" class="form-select">
+                                    <option value="0" selected>Selecciona un estado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ddlmunicipio" class="form-label">Municipio</label>
+                                <select id="ddlmunicipio" class="form-select">
+                                    <option value="0" selected>Selecciona un municipio</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ddlcolonia" class="form-label">Colonia</label>
+                                <select id="ddlcolonia" class="form-select" th:field="*{Direcciones[0].Colonia.idColonia}">
+                                    <option value="0" selected>Selecciona una colonia</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Botón submit -->
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- jQuery y Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+
+            $(document).ready(function () {
+
+                console.log("iniciando")
+                $("#ddlpais").change(function () {
+                    if ($("#ddlpais").val() == 0) {
+                        $("#ddlestado").empty();
+                        $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                    } else {
+                        console.log("Primer Else")
+                        $.ajax({
+                            url: "/usuario/getEstadosByPais/" + $("#ddlpais").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlestado").empty();
+                                    $("#ddlestado").append("<option value=0 selected>Selecciona un estado</option>");
+                                    $.each(data.Objects, function (i, estado) {
+                                        $("#ddlestado").append("<option value=" + estado.idEstado + ">" + estado.nombre + "</option>");
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal");
+                            }
+
+                        })
+                    }
+                });
+
+
+                $("#ddlestado").change(function () {
+                    if ($("#ddlestado").val() == 0) {
+                        $("#ddlmunicipio").empty();
+                        $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                    } else {
+                        console.log("municipio")
+                        $.ajax({
+                            url: "/usuario/getMunicipioByEstado/" + $("#ddlestado").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlmunicipio").empty();
+                                    $("#ddlmunicipio").append("<option value=0 selected>Selecciona un municipio</option>");
+                                    $.each(data.Objects, function (i, municipio) {
+                                        $("#ddlmunicipio").append("<option value=" + municipio.idMunicipio + ">" + municipio.nombre + "</option>");
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal")
+                            }
+
+                        })
+                    }
+
+                });
+
+
+                $("#ddlmunicipio").change(function () {
+                    if ($("#ddlmunicipio").val() == 0) {
+                        $("#ddlcolonia").empty();
+                        $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                    } else {
+                        console.log("colonia")
+                        $.ajax({
+                            url: "/usuario/getColoniaByMunicipio/" + $("#ddlmunicipio").val(),
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function (data, textStatus, jqXHR) {
+                                if (data.Correct) {
+                                    $("#ddlcolonia").empty();
+                                    $("#ddlcolonia").append("<option value=0 selected>Selecciona una colonia</option>");
+                                    $.each(data.Objects, function (i, colonia) {
+                                        //                                        $("#ddlcolonia").append("<option value=" + colonia.idColonia + ">" + colonia.nombre + "</option>");
+                                        $("#ddlcolonia").append('<option value="' + colonia.idColonia + '">' + colonia.nombre + '</option>');
+
+                                    })
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("Algo salio mal")
+                            }
+
+                        })
+                    }
+
+                });
+
+            });
+
+        </script>
+
+    </body>
+</html>
