@@ -52,7 +52,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("usuario")
-public class UsuarioController {   
+public class UsuarioController {
 
     private static final String urlBase = "http://localhost:8080/api/";
 
@@ -112,7 +112,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/add")
-    public String addUsuario(@Valid @ModelAttribute("Usuario") Usuario usuario,BindingResult bindingResult,
+    public String addUsuario(@Valid @ModelAttribute("Usuario") Usuario usuario, BindingResult bindingResult,
             @RequestParam("imagenFile") MultipartFile imagenFile, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -120,12 +120,11 @@ public class UsuarioController {
             return "/FormUsu"; // Vuelve al formulario si hay errores
         }
 
-        
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        
+
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         // Parte 1: El objeto Usuario 
@@ -136,7 +135,7 @@ public class UsuarioController {
 
         // Parte 2: El archivo (si existe)
         if (imagenFile != null && !imagenFile.isEmpty()) {
-            body.add("Imagen", imagenFile.getResource()); 
+            body.add("Imagen", imagenFile.getResource());
         }
 
         // 3. Crear la petición completa
@@ -159,7 +158,7 @@ public class UsuarioController {
 
     @GetMapping("detail/{IdUsuario}")
     public String Detail(@PathVariable("IdUsuario") int IdUsuario, Model model) {
-        
+
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Result<Usuario>> responseEntity
@@ -167,13 +166,12 @@ public class UsuarioController {
                         HttpEntity.EMPTY, new ParameterizedTypeReference<Result<Usuario>>() {
                 });
 
-         ResponseEntity<Result<List<Rol>>> responseEntityRol
+        ResponseEntity<Result<List<Rol>>> responseEntityRol
                 = restTemplate.exchange(urlBase + "/rol", HttpMethod.GET,
                         HttpEntity.EMPTY, new ParameterizedTypeReference<Result<List<Rol>>>() {
                 });
 
         Result resultRol = responseEntityRol.getBody();
-        model.addAttribute("Roles", resultRol.object);
 
         ResponseEntity<Result<List<Pais>>> responseEntityPais
                 = restTemplate.exchange(urlBase + "/pais", HttpMethod.GET,
@@ -181,7 +179,7 @@ public class UsuarioController {
                 });
 
         Result resultPais = responseEntityPais.getBody();
-        
+
         if (responseEntity.getStatusCode().value() == 200) {
             Result result = responseEntity.getBody();
 
@@ -195,6 +193,149 @@ public class UsuarioController {
         return "UsuarioDetail";
     }
 
+    @PostMapping("/editar")
+    public String updateUsuario(
+            //            @Valid
+            @ModelAttribute("Usuario") Usuario usuario,
+            BindingResult bindingResult,
+            Model model) {
+
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("Usuario", usuario);
+//            return "/FormUsu"; // Vuelve al formulario si hay errores
+//        }
+        int idUsuario = usuario.getIdUsuario();
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Usuario> requestEntity = new HttpEntity<>(usuario, headers);
+
+        try {
+            String urlUpdate = urlBase + "usuario/" + idUsuario;
+
+            ResponseEntity<Result> response = restTemplate.exchange(
+                    urlUpdate,
+                    HttpMethod.PUT,
+                    requestEntity,
+                    Result.class
+            );
+
+            if (response.getBody() != null && response.getBody().Correct) {
+                System.out.println("Usuario actualizado correctamente sin imagen");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al llamar a la API de Update: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return "redirect:/usuario/detail/" + idUsuario;
+    }
+
+    @PostMapping("/search")
+    public String BuscarUsuarios(@ModelAttribute("UsuariosBusqueda") Usuario usuario, Model model) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Result<List<Rol>>> responseEntityRol
+                = restTemplate.exchange(urlBase + "/rol", HttpMethod.GET,
+                        HttpEntity.EMPTY, new ParameterizedTypeReference<Result<List<Rol>>>() {
+                });
+
+        Result resultRol = responseEntityRol.getBody();
+
+        HttpEntity<Usuario> requestEntity = new HttpEntity<>(usuario);
+
+        ResponseEntity<Result<Usuario>> responseEntity = restTemplate.exchange(
+                urlBase + "usuario/getAllDinamico",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Result<Usuario>>() {
+        }
+        );
+
+        Result result = responseEntity.getBody();
+
+        model.addAttribute("usuarioBusqueda", new Usuario());
+
+        model.addAttribute("Roles", resultRol.object);
+
+        model.addAttribute("Usuarios", result.Objects);
+        return "Usuario";
+    }
+
+    @PostMapping("/updateImagen")
+    public String updateImagen(@RequestParam("idUsuario") int idUsuario,
+            @RequestParam("imagenFile") MultipartFile imagenFile,
+            Model model) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            String imagenBase64 = Base64.getEncoder().encodeToString(imagenFile.getBytes());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            headers.add("X-HTTP-Method-Override", "PATCH");
+            HttpEntity<String> requestEntity = new HttpEntity<>(imagenBase64, headers);
+
+            ResponseEntity<Result> responseEntity = restTemplate.exchange(
+                    urlBase + "usuario/" + idUsuario + "/imagen",
+                    HttpMethod.POST,
+                    requestEntity,
+                    Result.class
+            );
+
+            if (responseEntity.getStatusCode().value() == 200) {
+                Result result = responseEntity.getBody();
+
+                if (result != null && result.Correct) {
+                    // Aquí podrías agregar un mensaje de éxito si lo necesitas
+                    System.out.println("Imagen actualizada: " + result.Correct);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error en Patch: " + e.getMessage());
+        }
+
+        return "redirect:/usuario/detail/" + idUsuario;
+    }
+
+//    @GetMapping("/{IdDireccion}")
+//    public String DetailDireccion(@PathVariable("IdDireccion") int IdDireccion, Model model) {
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        ResponseEntity<Result<Direccion>> responseEntity
+//                = restTemplate.exchange(urlBase + "usuario/" + IdDireccion, HttpMethod.GET,
+//                        HttpEntity.EMPTY, new ParameterizedTypeReference<Result<Direccion>>() {
+//                });
+//
+//        if (responseEntity.getStatusCode().value() == 200) {
+//            Result result = responseEntity.getBody();
+//            model.addAttribute("Direccion", result.object);
+//        }
+//
+//        return "UsuarioDetail";
+//    }
+//    @GetMapping("/GetByIdDireccion/{IdDireccion}")
+//    @ResponseBody
+//    public Result GetByIdDireccion(@PathVariable int IdDireccion) {
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        ResponseEntity<Result<Usuario>> responseEntity
+//                = restTemplate.exchange(urlBase + "usuario/" + IdDireccion, HttpMethod.GET,
+//                        HttpEntity.EMPTY, new ParameterizedTypeReference<Result<Usuario>>() {
+//                });
+//
+//        Result result = direccionJPADAOImplementation.getById(IdDireccion);
+//
+//        return result;
+//    }
 //    @GetMapping("delete/{IdUsuario}")
 //    public String Delete(@PathVariable("IdUsuario") int IdUsuario, RedirectAttributes redirectAttributes) {
 //        //Result resultDelete = usuarioDAOImplementation.DeleteById(IdUsuario);
@@ -212,7 +353,6 @@ public class UsuarioController {
 //        return "redirect:/usuario";
 //    }
 //    
-    
 //    @GetMapping("formEdit")
 //    public String FormEditable(Model model) {
 //
@@ -230,14 +370,6 @@ public class UsuarioController {
 //        return "formEditable";
 //    }
 //
-//    @GetMapping("/GetByIdDireccion/{IdDireccion}")
-//    @ResponseBody
-//    public Result GetByIdDireccion(@PathVariable int IdDireccion) {
-//
-//        Result result = direccionJPADAOImplementation.getById(IdDireccion);
-//
-//        return result;
-//    }
 //
 //    @PostMapping("addDireccion/{IdUsuario}")
 //    public String addDireccion(@RequestBody Direccion direccion, @PathVariable("IdUsuario") int IdUsuario,
@@ -262,7 +394,6 @@ public class UsuarioController {
 //    }
 //
 //
-
 //
 //    @GetMapping("deleteDireccion/{idUsuario}/{idDireccion}")
 //    public String DeleteDireccion(
@@ -623,14 +754,4 @@ public class UsuarioController {
 //        //sesion.removeAttribute("archivoCargaMasiva");
 //    }
 //
-//    @PostMapping("/search")
-//    public String BuscarUsuarios(@ModelAttribute("UsuariosBusqueda") Usuario usuario, Model model) {
-//
-//        model.addAttribute("usuarioBusqueda", new Usuario());
-//
-//        model.addAttribute("Roles", RolDAOImplementation.getAll().Objects);
-//
-//        model.addAttribute("Usuarios", usuarioDAOImplementation.BusquedaUsuarioDireccionAll(usuario).Objects);
-//        return "Usuario";
-//    }
 }

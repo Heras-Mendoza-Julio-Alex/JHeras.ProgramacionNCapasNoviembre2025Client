@@ -28,12 +28,24 @@
                 <!-- INFORMACIÓN DEL USUARIO -->
                 <div class="col">
                     <h3>Información Usuario</h3>
-                    <div class="text-center mb-3">
-                        <!--                        <img src="https://static.vecteezy.com/system/resources/thumbnails/022/014/184/small/user-icon-member-login-isolated-vector.jpg"
-                                                     class="rounded" style="max-width: 180px;">-->
 
-                        <img th:src="${usuario.Imagen != null ? 'data:image/*;base64,' + usuario.Imagen : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT31I-b-Jdf8bjPM-mm-V1qCpb-oudRLvtw&s'}">
+                    <div class="text-center mb-3">
+                        <img th:src="${usuario.Imagen != null ? 'data:image/*;base64,' + usuario.Imagen : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNT31I-b-Jdf8bjPM-mm-V1qCpb-oudRLvtw&s'}"
+                             style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 2px solid #ddd;"
+                             class="img-thumbnail">
                     </div>
+
+                    <form th:action="@{/usuario/updateImagen}" method="post" enctype="multipart/form-data" id="formImagen">
+                        <input type="hidden" name="idUsuario" th:value="${usuario.idUsuario}" />
+
+                        <input type="file" name="imagenFile" id="inputImagen" accept="image/*" style="display: none;" onchange="this.form.submit()" />
+
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('inputImagen').click();">
+                                <i class="bi bi-camera"></i> Cambiar Foto
+                            </button>
+                        </div>
+                    </form>
 
                     <tr th:each="usuario : ${usuario}"></tr>
 
@@ -221,7 +233,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <form method="post" th:object="${usuario}" th:action="@{/usuario/add}" enctype="multipart/form-data">
+                        <form method="post" th:object="${usuario}" th:action="@{/usuario/editar}" enctype="multipart/form-data">
                             <input type="hidden" class="form-control" th:field="${usuario.idUsuario}">
                             <input type="hidden" th:field="*{idUsuario}" id="idusuario">
 
@@ -319,13 +331,7 @@
                                             </div>
                                         </div>
 
-                                    </div>
-                                    <div class="card p-3 w-100 h-100">
-                                        <label for="imagenFile" class="form-label fw-bold">Imagen</label>
-                                        <input type="file" class="form-control mb-2" name="Imagen" accept="image/png, image/jpeg, image/jpg" id="Imagen">
-                                        <img id="Imagen" style="max-width: 300px; max-height: auto" class="mx-auto" src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"/>
-
-                                    </div>
+                                    </div>                                   
                                     <div
                                         <label for="RolUsuario" class="form-label">Rol</label>
                                         <select class="form-select" id="RolUsuario" th:field="*{rol.idRol}">
@@ -457,8 +463,6 @@
             </div>
 
 
-
-
         </div>
 
     </body>
@@ -478,7 +482,7 @@
                 confirmButtonText: "Si, borrar"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch("http://localhost:8080/api/direccion/" +idUsuario+"/"+ idDireccion, {
+                    fetch("http://localhost:8080/api/direccion/" + idUsuario + "/" + idDireccion, {
                         method: 'DELETE'
                     })
                             .then(response => response.json())
@@ -498,8 +502,6 @@
                 }
             });
         }
-
-
 
         function modalDireccionEdit(IdDireccion) {
             console.log("IdDireccion recibido:", IdDireccion);
@@ -582,7 +584,7 @@
             } else {
                 // EDITAR DIRECCIÓN (tu código existente)
                 $.ajax({
-                    url: '/usuario/GetByIdDireccion/' + IdDireccion,
+                    url: 'http://localhost:8080/api/direccion/' + IdDireccion,
                     type: 'GET',
                     dataType: 'json',
                     success: function (result) {
@@ -590,21 +592,24 @@
                         $('#Calle').val(result.object.calle);
                         $('#NumeroExterior').val(result.object.numeroExterior);
                         $('#NumeroInterior').val(result.object.numeroInterior);
-                        const idPais = result.object.Colonia.municipio.Estado.Pais.idPais;
-                        const idEstado = result.object.Colonia.municipio.Estado.idEstado;
-                        const idMunicipio = result.object.Colonia.municipio.idMunicipio;
+                        const idPais = result.object.Colonia.Municipio.Estado.Pais.idPais;
+                        const idEstado = result.object.Colonia.Municipio.Estado.idEstado;
+                        const idMunicipio = result.object.Colonia.Municipio.idMunicipio;
                         const idColonia = result.object.Colonia.idColonia;
+                        console.log(idPais, idEstado, idMunicipio, idColonia);
                         $('#ddlpais').val(idPais).trigger('change');
-                        // Eventos para cargar estados, municipios y colonias (igual que tu código original)
+
                         $("#ddlpais").off("change").on("change", function () {
                             $.ajax({
-                                url: "/usuario/getEstadosByPais/" + $(this).val(),
+                                url: "http://localhost:8080/api/estado/getEstadosByPais/" + idPais,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (data) {
                                     $("#ddlestado").empty().append("<option value='0'>Selecciona un estado</option>");
-                                    $.each(data.Objects, function (i, estado) {
-                                        $("#ddlestado").append(`<option value="${estado.idEstado}">${estado.nombre}</option>`);
+                                    $.each(data.object, function (i, estado) {
+                                        $("#ddlestado").append(
+                                                "<option value=" + estado.idEstado + ">" + estado.nombre + "</option>"
+                                                );
                                     });
                                     $("#ddlestado").val(idEstado).trigger("change");
                                 }
@@ -612,12 +617,12 @@
                         });
                         $("#ddlestado").off("change").on("change", function () {
                             $.ajax({
-                                url: "/usuario/getMunicipioByEstado/" + $(this).val(),
+                                url: "http://localhost:8080/api/municipio/getMunicipioByEstado/" + idEstado,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (data) {
                                     $("#ddlmunicipio").empty().append("<option value='0'>Selecciona un municipio</option>");
-                                    $.each(data.Objects, function (i, municipio) {
+                                    $.each(data.object, function (i, municipio) {
                                         $("#ddlmunicipio").append(`<option value="${municipio.idMunicipio}">${municipio.nombre}</option>`);
                                     });
                                     $("#ddlmunicipio").val(idMunicipio).trigger("change");
@@ -626,12 +631,12 @@
                         });
                         $("#ddlmunicipio").off("change").on("change", function () {
                             $.ajax({
-                                url: "/usuario/getColoniaByMunicipio/" + $(this).val(),
+                                url: "http://localhost:8080/api/colonia/getColoniaByMunicipio/" + idMunicipio,
                                 type: "GET",
                                 dataType: "json",
                                 success: function (data) {
                                     $("#ddlcolonia").empty().append("<option value='0'>Selecciona una colonia</option>");
-                                    $.each(data.Objects, function (i, colonia) {
+                                    $.each(data.object, function (i, colonia) {
                                         $("#ddlcolonia").append(`<option value="${colonia.idColonia}">${colonia.nombre}</option>`);
                                     });
                                     $("#ddlcolonia").val(idColonia);
