@@ -519,14 +519,14 @@
                     const paisId = $(this).val();
                     if (paisId != 0) {
                         $.ajax({
-                            url: "/usuario/getEstadosByPais/" + paisId,
+                            url: "http://localhost:8080/api/estado/getEstadosByPais/" + paisId,
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
                                 $("#ddlestado")
                                         .empty()
                                         .append("<option value='0'>Selecciona un estado</option>");
-                                $.each(data.Objects, function (i, estado) {
+                                $.each(data.object, function (i, estado) {
                                     $("#ddlestado").append(`<option value="${estado.idEstado}">${estado.nombre}</option>`);
                                 });
                                 $("#ddlmunicipio").empty().append("<option value='0'>Selecciona un municipio</option>");
@@ -543,14 +543,14 @@
                     const estadoId = $(this).val();
                     if (estadoId != 0) {
                         $.ajax({
-                            url: "/usuario/getMunicipioByEstado/" + estadoId,
+                            url: "http://localhost:8080/api/municipio/getMunicipioByEstado/" + estadoId,
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
                                 $("#ddlmunicipio")
                                         .empty()
                                         .append("<option value='0'>Selecciona un municipio</option>");
-                                $.each(data.Objects, function (i, municipio) {
+                                $.each(data.object, function (i, municipio) {
                                     $("#ddlmunicipio").append(`<option value="${municipio.idMunicipio}">${municipio.nombre}</option>`);
                                 });
                                 $("#ddlcolonia").empty().append("<option value='0'>Selecciona una colonia</option>");
@@ -565,14 +565,14 @@
                     const municipioId = $(this).val();
                     if (municipioId != 0) {
                         $.ajax({
-                            url: "/usuario/getColoniaByMunicipio/" + municipioId,
+                            url: "http://localhost:8080/api/colonia/getColoniaByMunicipio/" + municipioId,
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
                                 $("#ddlcolonia")
                                         .empty()
                                         .append("<option value='0'>Selecciona una colonia</option>");
-                                $.each(data.Objects, function (i, colonia) {
+                                $.each(data.object, function (i, colonia) {
                                     $("#ddlcolonia").append(`<option value="${colonia.idColonia}">${colonia.nombre}</option>`);
                                 });
                             }
