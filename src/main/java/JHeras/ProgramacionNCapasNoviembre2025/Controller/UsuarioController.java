@@ -304,6 +304,115 @@ public class UsuarioController {
         return "redirect:/usuario/detail/" + idUsuario;
     }
 
+    @PostMapping("addDireccion/{IdUsuario}")
+    public String addDireccion(@RequestBody Direccion direccion, @PathVariable("IdUsuario") int IdUsuario,
+            Model model) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Direccion> requestEntity = new HttpEntity<>(direccion, headers);
+
+        if (direccion.getIdDireccion() == 0) {
+            try {
+                String urlUpdate = urlBase + "direccion/add/" + IdUsuario;
+
+                ResponseEntity<Result> response = restTemplate.exchange(
+                        urlUpdate,
+                        HttpMethod.POST,
+                        requestEntity,
+                        Result.class
+                );
+
+                if (response.getBody() != null && response.getBody().Correct) {
+                    System.out.println("Direccion añadida");
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al llamar a la API de add direccion: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                String urlUpdate = urlBase + "direccion/" + IdUsuario + "/" + direccion.getIdDireccion();
+
+                ResponseEntity<Result> response = restTemplate.exchange(
+                        urlUpdate,
+                        HttpMethod.PUT,
+                        requestEntity,
+                        Result.class
+                );
+
+                if (response.getBody() != null && response.getBody().Correct) {
+                    System.out.println("Direccion actualizada");
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error al llamar a la API de edit direccion: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        return "redirect:/usuario/detail/" + IdUsuario;
+    }
+
+    @GetMapping("CargaMasiva")
+    public String CargaMasiva() {
+        return "CargaMasiva";
+    }
+
+    @PostMapping("CargaMasiva")
+    public String CargaMasiva(@RequestParam("archivo") MultipartFile archivo, Model model) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String urlCarga = urlBase + "/usuario/cargamasiva";
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("archivo", archivo.getResource());
+            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, new HttpHeaders());
+
+            Result resultado = restTemplate.postForObject(urlCarga, request, Result.class);
+
+            if (resultado != null) {
+                model.addAttribute("result", resultado);
+
+                if (resultado.Correct) {
+                    model.addAttribute("token", resultado.object);
+                    model.addAttribute("listaErrores", new ArrayList<>());
+                } else {
+                    model.addAttribute("listaErrores", resultado.Objects);
+                    model.addAttribute("token", null);
+                }
+            }
+        } catch (Exception e) {
+            model.addAttribute("Error: " + e.getMessage());
+        }
+        return "CargaMasiva";
+    }
+
+    @PostMapping("/CargaMasiva/procesar")
+    public String procesarConfirmado(@RequestParam("token") String token, Model model) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String urlAPI = urlBase +"/usuario/cargamasiva/procesar";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + token);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(urlAPI, entity, String.class);
+
+            model.addAttribute("respuestaServidor", response.getBody());
+
+        } catch (Exception e) {
+            model.addAttribute("respuestaServidor", "Error al conectar con el servidor: " + e.getMessage());
+        }
+        return "CargaMasiva";
+    }
+
 //    @GetMapping("/{IdDireccion}")
 //    public String DetailDireccion(@PathVariable("IdDireccion") int IdDireccion, Model model) {
 //
@@ -371,27 +480,6 @@ public class UsuarioController {
 //    }
 //
 //
-//    @PostMapping("addDireccion/{IdUsuario}")
-//    public String addDireccion(@RequestBody Direccion direccion, @PathVariable("IdUsuario") int IdUsuario,
-//            Model model) {
-//
-//        ModelMapper modelMapper = new ModelMapper();
-//        JHeras.ProgramacionNCapasNoviembre2025.JPA.Direccion direccionJPA
-//                = modelMapper.map(direccion, JHeras.ProgramacionNCapasNoviembre2025.JPA.Direccion.class);
-//
-//        Result result;
-//        if (direccionJPA.getIdDireccion() == 0) {
-//
-//            result = direccionJPADAOImplementation.add(direccionJPA, IdUsuario);
-//        } else {
-//
-//            result = direccionJPADAOImplementation.edit(direccion, IdUsuario);
-//        }
-//
-//        model.addAttribute("result", result);
-//
-//        return "redirect:/usuario/detail/" + IdUsuario;
-//    }
 //
 //
 //
@@ -531,10 +619,6 @@ public class UsuarioController {
 //
 //    }
 //
-//    @GetMapping("CargaMasiva")
-//    public String CargaMasiva() {
-//        return "CargaMasiva";
-//    }
 //
 //    @PostMapping("CargaMasiva")
 //    public String CargaMasiva(@ModelAttribute MultipartFile archivo, Model model, HttpSession session) throws IOException {
