@@ -397,7 +397,7 @@ public class UsuarioController {
     public String procesarConfirmado(@RequestParam("token") String token, Model model) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String urlAPI = urlBase +"/usuario/cargamasiva/procesar";
+            String urlAPI = urlBase + "/usuario/cargamasiva/procesar";
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + token);
